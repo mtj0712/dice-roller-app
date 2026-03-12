@@ -1,4 +1,4 @@
-import { useState } from "react"; // 👀 Import useState
+// 👀 No more useState import — state is gone
 
 const dotPositions: Record<number, number[]> = {
   1: [4],
@@ -10,21 +10,16 @@ const dotPositions: Record<number, number[]> = {
 };
 
 interface DieProps {
-  initialValue: number; // 👀 Renamed from value to initialValue
+  value: number; // 👀 Current value from the parent
+  onRoll: () => void; // 👀 Callback from parent
 }
 
-function Die({ initialValue }: DieProps) {
-  const [value, setValue] = useState(initialValue); // 👀 State seeded by the prop
-
-  function roll() { // 👀 Add this
-    setValue(Math.floor(Math.random() * 6) + 1);
-  }
-
+function Die({ value, onRoll }: DieProps) { // 👀 No internal state
   const dots = dotPositions[value] ?? [];
 
   return (
     <button
-      onClick={roll} // 👀 Add this
+      onClick={onRoll} // 👀 Call parent's handler
       className="grid grid-cols-3 grid-rows-3 gap-2 rounded-xl bg-white p-4 shadow-lg transition-transform hover:scale-105 active:scale-95"
       style={{ width: "120px", height: "120px" }}
     >
