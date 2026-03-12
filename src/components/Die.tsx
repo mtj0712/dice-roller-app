@@ -1,3 +1,5 @@
+import { useState } from "react"; // 👀 Import useState
+
 const dotPositions: Record<number, number[]> = {
   1: [4],
   2: [2, 6],
@@ -7,17 +9,23 @@ const dotPositions: Record<number, number[]> = {
   6: [0, 2, 3, 5, 6, 8],
 };
 
-// 👀 Define the prop types
 interface DieProps {
-  value: number;
+  initialValue: number; // 👀 Renamed from value to initialValue
 }
 
-function Die({ value }: DieProps) { // 👀 Accept value as a prop
+function Die({ initialValue }: DieProps) {
+  const [value, setValue] = useState(initialValue); // 👀 State seeded by the prop
+
+  function roll() { // 👀 Add this
+    setValue(Math.floor(Math.random() * 6) + 1);
+  }
+
   const dots = dotPositions[value] ?? [];
 
   return (
     <button
-      className="grid grid-cols-3 grid-rows-3 gap-2 rounded-xl bg-white p-4 shadow-lg"
+      onClick={roll} // 👀 Add this
+      className="grid grid-cols-3 grid-rows-3 gap-2 rounded-xl bg-white p-4 shadow-lg transition-transform hover:scale-105 active:scale-95"
       style={{ width: "120px", height: "120px" }}
     >
       {Array.from({ length: 9 }).map((_, i) => (
